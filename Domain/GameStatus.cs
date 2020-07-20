@@ -1,4 +1,4 @@
-﻿namespace GameEngine
+﻿namespace Domain
 {
     public enum GameStatus
     {

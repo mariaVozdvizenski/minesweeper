@@ -12,6 +12,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{49E2D0BE-87B2-4465-88BB-6F8DA48C07ED}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{16E626BD-7571-4213-A9F3-433D96D78E46}"
+ProjectSection(SolutionItems) = preProject
+	Directory.Build.props = Directory.Build.props
+EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{163344A7-9A29-41CF-97BE-A6FF802AB04A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +49,9 @@ Global
 		{49E2D0BE-87B2-4465-88BB-6F8DA48C07ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E2D0BE-87B2-4465-88BB-6F8DA48C07ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E2D0BE-87B2-4465-88BB-6F8DA48C07ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{163344A7-9A29-41CF-97BE-A6FF802AB04A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163344A7-9A29-41CF-97BE-A6FF802AB04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163344A7-9A29-41CF-97BE-A6FF802AB04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163344A7-9A29-41CF-97BE-A6FF802AB04A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

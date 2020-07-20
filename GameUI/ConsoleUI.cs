@@ -1,4 +1,5 @@
 ﻿using System;
+using Domain;
 using GameEngine;
 
 namespace GameUI
@@ -9,7 +10,7 @@ namespace GameUI
         private static readonly string _horizontalSeparator = "-";
         private static readonly string _centerSeparator = "+";
 
-        public static void PrintBoard(GameBoard game)
+        public static void PrintBoard(GameBoardEngine gameBoardEngine, GameBoard game)
         {
             Console.Clear();
             for (int yIndex = 0; yIndex < game.Height; yIndex++)
@@ -19,7 +20,7 @@ namespace GameUI
                 for (int xIndex = 0; xIndex < game.Width; xIndex++)
                 {
                     
-                    line = line + " " + GetSingleState(game.GetPanel(xIndex + 1, yIndex + 1)) + " ";
+                    line = line + " " + GetSingleState(gameBoardEngine.GetPanel(xIndex + 1, yIndex + 1)) + " ";
                     
                     if (xIndex < game.Width - 1)
                     {
