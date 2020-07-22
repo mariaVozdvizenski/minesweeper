@@ -12,7 +12,7 @@ namespace GameEngine
         private readonly GameBoard _gameBoard;
         private readonly AppDbContext _context;
         
-        private ICollection<Panel>? GameBoardPanels { get; set; }
+        public ICollection<Panel>? GameBoardPanels { get; set; }
         public GameBoardEngine(GameBoard gameBoard, AppDbContext context)
         {
             _gameBoard = gameBoard;
@@ -38,7 +38,7 @@ namespace GameEngine
             _context.SaveChangesAsync();
         }
 
-        public void SerializeGameBoardPanels()
+        private void SerializeGameBoardPanels()
         {
             _gameBoard.PanelsListJson = JsonSerializer.Serialize(GameBoardPanels);
         }

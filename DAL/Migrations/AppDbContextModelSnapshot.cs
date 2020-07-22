@@ -28,11 +28,13 @@ namespace DAL.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PanelsListJson")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SaveGameName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(128);
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");

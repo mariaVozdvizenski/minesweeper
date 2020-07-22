@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200720090419_AddedSaveGameName")]
-    partial class AddedSaveGameName
+    [Migration("20200721111550_InitialDbCreation")]
+    partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,11 +30,13 @@ namespace DAL.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PanelsListJson")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SaveGameName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(128);
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");

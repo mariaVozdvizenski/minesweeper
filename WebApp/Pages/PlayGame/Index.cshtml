@@ -1,0 +1,51 @@
+﻿@page "{id}"
+@using System.Data
+@using System.Runtime.Intrinsics.X86
+@using GameEngine
+@model WebApp.Pages.PlayGame.Index
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Play Game";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Play Game</title>
+</head>
+<body>
+<div class="container">
+    <form method="post">
+        <table class="table table-bordered">
+            @for (var row = 0; row < Model.GameBoard.Height; row++)
+            {
+                <tbody>
+                <tr>
+                    @for (var col = 0; col < Model.GameBoard.Width; col++)
+                    {
+                        <td>
+                            @if (!Model.GameEngine.GetPanel(row + 1, col + 1).IsRevealed)
+                            {
+                                //fix row + 1 and col + 1
+                                <input type="radio" asp-for="Coordinates" value="@row,@col">
+                            }
+                            else
+                            {
+                                Index.GetSingleState(Model.GameEngine.GetPanel(row + 1, col + 1));
+                            }
+                        </td>
+                    }
+                </tr>
+                </tbody>
+            }
+        </table>
+        <div>
+            <button class="btn btn-primary" type="submit" asp-page-handler="Move">Make a move</button>
+            <button class="btn btn-primary" type="submit" asp-page-handler="Flag">Plant/Remove a flag</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

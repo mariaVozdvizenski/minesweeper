@@ -15,7 +15,8 @@ namespace DAL.Migrations
                     Width = table.Column<int>(nullable: false),
                     Height = table.Column<int>(nullable: false),
                     MineCount = table.Column<int>(nullable: false),
-                    PanelsListJson = table.Column<string>(nullable: true),
+                    SaveGameName = table.Column<string>(maxLength: 128, nullable: false),
+                    PanelsListJson = table.Column<string>(nullable: false),
                     Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

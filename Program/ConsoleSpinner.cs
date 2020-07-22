@@ -1,23 +1,26 @@
 ﻿using System;
 
-public class ConsoleSpinner
+namespace Program
 {
-    private int _counter;
+    public class ConsoleSpinner
+    {
+        private int _counter;
     
-    public ConsoleSpinner()
-    {
-        _counter = 0;
-    }
-    public void Turn()
-    {
-        _counter++;        
-        switch (_counter % 4)
+        public ConsoleSpinner()
         {
-            case 0: Console.Write("/"); break;
-            case 1: Console.Write("-"); break;
-            case 2: Console.Write("\\"); break;
-            case 3: Console.Write("|"); break;
+            _counter = 0;
         }
-        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+        public void Turn()
+        {
+            _counter++;        
+            switch (_counter % 4)
+            {
+                case 0: Console.Write("/"); break;
+                case 1: Console.Write("-"); break;
+                case 2: Console.Write("\\"); break;
+                case 3: Console.Write("|"); break;
+            }
+            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+        }
     }
 }
