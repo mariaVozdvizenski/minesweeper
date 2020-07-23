@@ -52,7 +52,7 @@ namespace Program
 
             foreach (var game in query)
             {
-                Console.WriteLine($"{game.SaveGameName}");
+                Console.WriteLine($"{game.SaveGameName} ({game.Height}x{game.Width})");
             }
             
             GameBoard gameBoard;
@@ -86,8 +86,8 @@ namespace Program
                 
             } while (true);
             
-            GameBoardEngine gameBoardEngine = new GameBoardEngine(gameBoard, ctx);
-            gameBoardEngine.DeserializeGameBoardPanels();
+            GameBoardEngine gameBoardEngine = new GameBoardEngine(ctx);
+            gameBoardEngine.DeserializeGameBoardPanels(gameBoard);
             
             MainGame(gameBoardEngine, gameBoard, ctx, userYint, userXint, userCanceled, saveGame, plantFlag, "updateGame");
             
@@ -100,6 +100,7 @@ namespace Program
                 .UseSqlite("Data Source=/Users/maria/csharp2019fall/Proge/minesweeper/WebApp/app.db").Options;
             
             var ctx = new AppDbContext(dbOption);
+            var gameEngine = new GameBoardEngine(ctx);
             
             var userHeight = 0;
             var userWidth = 0;
@@ -119,8 +120,7 @@ namespace Program
                 Width = userWidth
             };
             
-            var gameEngine = new GameBoardEngine(game, ctx);
-            gameEngine.InitializeGameBoard();
+            gameEngine.CreateNewGameBoard(userHeight, userWidth, 10);
             
             ConsoleUI.PrintBoard(gameEngine, game);
             
@@ -136,8 +136,8 @@ namespace Program
             (userXint, userCanceled, _, _) = GetUserIntInput("Enter X coordinate", 1, game.Width, 0);
             ClearConsoleIfUserCanceled(userCanceled);
 
-            gameEngine.FirstMove(userXint,userYint, new Random());
-            gameEngine.RevealPanel(userXint,userYint);
+            gameEngine.FirstMove(userXint,userYint, new Random(), game);
+            gameEngine.RevealPanel(userXint,userYint, game);
             
             MainGame(gameEngine, game, ctx, userYint, userXint, userCanceled, saveGame, plantFlag, "newGame");
             return "";
@@ -150,7 +150,7 @@ namespace Program
             {
                 Console.Clear();
                 ConsoleUI.PrintBoard(gameEngine, game);
-                
+
                 (userYint, userCanceled, plantFlag, saveGame) = GetUserIntInput("Enter Y coordinate", 1, game.Height, 0, "F", "S");
                 if (userCanceled)
                 {
@@ -169,7 +169,11 @@ namespace Program
                 {
                     (userXint, userCanceled, _, _) = GetUserIntInput("Enter X coordinate", 1, game.Width, 0, null);
                     ClearConsoleIfUserCanceled(userCanceled);
-                    gameEngine.RevealPanel(userXint, userYint);
+                    if (!gameEngine.GameBoardPanels.Any(e => e.IsRevealed))
+                    {
+                        gameEngine.FirstMove(userXint,userYint, new Random(), game);
+                    }
+                    gameEngine.RevealPanel(userXint, userYint, game);
                 }
                 
             } while (game.Status == GameStatus.InProgress);
@@ -184,11 +188,9 @@ namespace Program
                     ConsoleUI.PrintBoard(gameEngine, game);
                     Console.WriteLine("GAME LOST!");
                     break;
-
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
         }
 
         static (int result, bool wasCanceled, bool flagPlanted, bool userSaved) GetUserIntInput(string prompt, int min, int max,
@@ -279,7 +281,7 @@ namespace Program
 
             if (type == "updateGame")
             {
-                gameBoardEngine.UpdateGameBoard();
+                gameBoardEngine.UpdateGameBoard(gameBoard);
                 SavingAnimation();
                 return;
             }
@@ -329,7 +331,7 @@ namespace Program
                     break;
                 }
             }
-            gameBoardEngine.AddGameBoardToDb();
+            gameBoardEngine.AddGameBoardToDb(gameBoard);
         }
         
     }

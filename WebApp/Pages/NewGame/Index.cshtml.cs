@@ -27,8 +27,10 @@ namespace WebApp.Pages.NewGame
         public IActionResult OnPost()
         {
             GameBoard!.MineCount = 10;
-            var gameBoardEngine = new GameBoardEngine(GameBoard, _appDbContext);
-            gameBoardEngine.InitializeGameBoard();
+            
+            var gameBoardEngine = new GameBoardEngine(_appDbContext);
+            var gameBoard = gameBoardEngine.CreateNewGameBoard(GameBoard.Height, GameBoard.Width, GameBoard.MineCount);
+            gameBoard.SaveGameName = GameBoard.SaveGameName;
 
             if (!ModelState.IsValid)
             {
@@ -40,8 +42,7 @@ namespace WebApp.Pages.NewGame
                 ModelState.AddModelError("GameBoard.SaveGameName", "A save game with this name already exists.");
                 return Page();
             }
-            
-            gameBoardEngine.AddGameBoardToDb();
+            gameBoardEngine.AddGameBoardToDb(gameBoard);
             return RedirectToPage("/PlayGame/Index", new {id = GameBoard.Id});
         }
     }

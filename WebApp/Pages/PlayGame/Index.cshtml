@@ -1,6 +1,7 @@
 ﻿@page "{id}"
 @using System.Data
 @using System.Runtime.Intrinsics.X86
+@using Domain
 @using GameEngine
 @model WebApp.Pages.PlayGame.Index
 
@@ -17,33 +18,58 @@
 </head>
 <body>
 <div class="container">
+    <div class="text-center">
+        <h3 class="display-4">Minesweeper</h3>
+        @if (Model.GameBoardEngine.GameStatus == GameStatus.Completed)
+        {
+            <h5 class="text-success">Game Won!</h5>
+        }
+        else if (Model.GameBoardEngine.GameStatus == GameStatus.Failed)
+        {
+            <h5 class="text-danger">Game Lost!</h5>
+        }
+    </div>
     <form method="post">
+        <br/>
         <table class="table table-bordered">
-            @for (var row = 0; row < Model.GameBoard.Height; row++)
+            @for (var col = 0; col < Model.GameBoardEngine.Height; col++)
             {
                 <tbody>
-                <tr>
-                    @for (var col = 0; col < Model.GameBoard.Width; col++)
+                <tr class="text-center">
+                    @for (var row = 0; row < Model.GameBoardEngine.Width; row++)
                     {
-                        <td>
-                            @if (!Model.GameEngine.GetPanel(row + 1, col + 1).IsRevealed)
+                        @if (!Model.GameBoardEngine.GetPanel(row + 1, col + 1).IsRevealed)
+                        {
+                            if (Model.GameBoardEngine.GetPanel(row + 1, col + 1).IsFlagged)
                             {
-                                //fix row + 1 and col + 1
-                                <input type="radio" asp-for="Coordinates" value="@row,@col">
+                                <td><input type="radio" asp-for="Coordinates" value="@row,@col">F</td>
                             }
                             else
                             {
-                                Index.GetSingleState(Model.GameEngine.GetPanel(row + 1, col + 1));
+                                <td><input type="radio" asp-for="Coordinates" value="@row,@col"></td>
                             }
-                        </td>
+                        }
+                        else
+                        {
+                            <td>@Model.GetSingleState(Model.GameBoardEngine.GetPanel(row + 1, col + 1))</td>
+                        }
                     }
                 </tr>
                 </tbody>
             }
         </table>
-        <div>
-            <button class="btn btn-primary" type="submit" asp-page-handler="Move">Make a move</button>
-            <button class="btn btn-primary" type="submit" asp-page-handler="Flag">Plant/Remove a flag</button>
+        <div class="text-center">
+            @if (Model.GameBoardEngine.GameStatus == GameStatus.Completed || Model.GameBoardEngine.GameStatus == GameStatus.Failed)
+            {
+                <button class="btn btn-outline-success" type="submit" asp-page-handler="Move" disabled="disabled">Make a move</button>
+                <button class="btn btn-outline-success" type="submit" asp-page-handler="Flag" disabled="disabled">Plant/Remove a flag</button>
+            }
+            else
+            {
+                <button class="btn btn-outline-success" type="submit" asp-page-handler="Move">Make a move</button>
+                <button class="btn btn-outline-success" type="submit" asp-page-handler="Flag">Plant/Remove a flag</button>
+            }
+
         </div>
     </form>
 </div>

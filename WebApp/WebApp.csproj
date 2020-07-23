@@ -30,4 +30,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <TypeScriptCompile Include="Pages\PlayGame\PlayGame.ts" />
+    </ItemGroup>
+
 </Project>

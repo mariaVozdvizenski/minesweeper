@@ -12,6 +12,18 @@ a {
   color: #0366d6;
 }
 
+.InProgress {
+  color: gray;
+}
+
+.Failed {
+  color: red;
+}
+
+.Completed {
+rgba(40, 167, 69, 0.5)
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

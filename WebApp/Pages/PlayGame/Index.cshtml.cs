@@ -11,59 +11,76 @@ namespace WebApp.Pages.PlayGame
     public class Index : PageModel
     {
         private readonly AppDbContext _appDbContext;
-        public GameBoardEngine GameEngine;
-        public GameBoard GameBoard { get; set; }
+        public readonly GameBoardEngine GameBoardEngine;
+        private GameBoard GameBoard { get; set; }
 
         [BindProperty]
         public string Coordinates { get; set; }
         
-
         public Index(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+            GameBoardEngine = new GameBoardEngine(_appDbContext);
         }
 
         private (int x, int y) ExtractCoordinatesFromString()
         {
             if (string.IsNullOrWhiteSpace(Coordinates)) return (1, 1);
             Console.WriteLine(Coordinates);
+            
             var coords = Coordinates.Split(",");
             Console.WriteLine(coords);
-            return (int.Parse(coords[0]), int.Parse(coords[1]));
+            
+            return (int.Parse(coords[0]) + 1, int.Parse(coords[1]) + 1);
         }
 
         public void OnGet(int id)
         {
-            GameBoard = _appDbContext.GameBoards.FirstOrDefault(e => e.Id == id);
-            GameEngine = new GameBoardEngine(GameBoard, _appDbContext);
-            GameEngine.DeserializeGameBoardPanels();
+            GameBoard = GameBoardEngine.GetGameBoardFromDb(id);
         }
 
-        public IActionResult OnPostMove()
+        public IActionResult OnPostMove(int id)
         {
+            var gameBoard = GameBoardEngine.GetGameBoardFromDb(id);
+            
             var (x, y) = ExtractCoordinatesFromString();
-            if (!GameEngine.GameBoardPanels.Any(e => e.IsRevealed))
+            
+            if (!GameBoardEngine.GameBoardPanels.Any(e => e.IsRevealed))
             {
-                GameEngine.FirstMove(x, y, new Random());
+                GameBoardEngine.FirstMove(x, y, new Random(), gameBoard);
             }
-            GameEngine.RevealPanel(x, y);
-            GameEngine.UpdateGameBoard();
-            return RedirectToPage(new {id = GameBoard.Id});
+            
+            GameBoardEngine.RevealPanel(x, y, gameBoard);
+            GameBoardEngine.UpdateGameBoard(gameBoard);
+            
+            return RedirectToPage(new {id = gameBoard.Id});
         }
 
-        public IActionResult OnPostFlag()
+        public IActionResult OnPostFlag(int id)
         {
+            var gameBoard = GameBoardEngine.GetGameBoardFromDb(id);
+            
             var (x, y) = ExtractCoordinatesFromString();
-            GameEngine.FlagPanel(x, y);
-            GameEngine.UpdateGameBoard();
-            return RedirectToPage(new {id = GameBoard.Id});
+
+            if (GameBoardEngine.GetPanel(x, y).IsFlagged)
+            {
+                GameBoardEngine.UnflagPanel(x, y);
+            }
+            else 
+            {
+                GameBoardEngine.FlagPanel(x, y);
+            }
+            
+            GameBoardEngine.UpdateGameBoard(gameBoard);
+            
+            return RedirectToPage(new {id = gameBoard.Id});
         }
         
-        public static string GetSingleState(Panel panel)
+        public string GetSingleState(Panel panel)
         {
             if (panel.IsMine && panel.IsRevealed)
             {
-                return "x";
+                return "X";
             }
 
             if (!panel.IsMine && panel.IsRevealed)

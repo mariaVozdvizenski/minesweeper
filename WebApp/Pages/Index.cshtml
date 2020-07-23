@@ -5,6 +5,8 @@
 }
 
 <div class="text-center">
-    <h2 class="display-4"><a asp-page="/NewGame/Index">Start a new game</a></h2>
+    <h2 class="display-4"><a asp-page="/NewGame/Index" onclick="function clicked() {
+      console.log('message');
+    } clicked()">Start a new game</a></h2>
     <h2 class="display-4"><a asp-page="/LoadGame/Index">Load a game</a></h2>
 </div>
