@@ -1,0 +1,9 @@
+{
+  "name": "WebApp",
+  "version": "1.0.0",
+  "dependencies": {
+    "@types/jquery": "^3.5.0",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2"
+  }
+}

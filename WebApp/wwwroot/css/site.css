@@ -8,21 +8,24 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
+
+
+
 a {
   color: #0366d6;
 }
 
-.InProgress {
-  color: gray;
+.flagged {
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRrfwSEGEXykczfiLQ0S410jjl3rl5S_rzm_g&usqp=CAU");
+  background-size: 50px 50px;
+  height: 50px;
+  width: 50px;
 }
 
-.Failed {
-  color: red;
+.mouse-over {
+  background-color: rgba(186, 230, 213, 0.37);
 }
 
-.Completed {
-rgba(40, 167, 69, 0.5)
-}
 
 .btn-primary {
   color: #fff;

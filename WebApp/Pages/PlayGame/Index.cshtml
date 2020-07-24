@@ -1,8 +1,5 @@
-﻿@page "{id}"
-@using System.Data
-@using System.Runtime.Intrinsics.X86
+﻿@page
 @using Domain
-@using GameEngine
 @model WebApp.Pages.PlayGame.Index
 
 @{
@@ -42,11 +39,13 @@
                         {
                             if (Model.GameBoardEngine.GetPanel(row + 1, col + 1).IsFlagged)
                             {
-                                <td><input type="radio" asp-for="Coordinates" value="@row,@col">F</td>
+                                <td class="flagged" onclick="cellClick(@row + 1, @col + 1, @Model.GameBoardEngine.Id)" oncontextmenu="cellFlag(@row + 1, @col + 1, @Model.GameBoardEngine.Id)">
+                                </td>
                             }
                             else
                             {
-                                <td><input type="radio" asp-for="Coordinates" value="@row,@col"></td>
+                                <td onclick="cellClick(@row + 1, @col + 1, @Model.GameBoardEngine.Id)" oncontextmenu="cellFlag(@row + 1, @col + 1, @Model.GameBoardEngine.Id)" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">
+                                </td>
                             }
                         }
                         else
@@ -73,5 +72,8 @@
         </div>
     </form>
 </div>
+@section Scripts{
+    <script src="@Url.Content("~/js/minesweeper.js")"></script>
+}
 </body>
 </html>

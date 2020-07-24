@@ -1,6 +1,7 @@
 using DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,11 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=app.db"));
-            services.AddRazorPages();        
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+            {
+                options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +43,7 @@ namespace WebApp
                 app.UseHsts();
             }
 
+            app.UseDefaultFiles();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

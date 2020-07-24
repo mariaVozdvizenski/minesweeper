@@ -13,7 +13,7 @@ namespace WebApp.Pages.PlayGame
         private readonly AppDbContext _appDbContext;
         public readonly GameBoardEngine GameBoardEngine;
         private GameBoard GameBoard { get; set; }
-
+        
         [BindProperty]
         public string Coordinates { get; set; }
         
@@ -39,6 +39,7 @@ namespace WebApp.Pages.PlayGame
             GameBoard = GameBoardEngine.GetGameBoardFromDb(id);
         }
 
+        /*
         public IActionResult OnPostMove(int id)
         {
             var gameBoard = GameBoardEngine.GetGameBoardFromDb(id);
@@ -55,8 +56,9 @@ namespace WebApp.Pages.PlayGame
             
             return RedirectToPage(new {id = gameBoard.Id});
         }
+        */
 
-        public IActionResult OnPostFlag(int id)
+        /*public IActionResult OnPostFlag(int id)
         {
             var gameBoard = GameBoardEngine.GetGameBoardFromDb(id);
             
@@ -75,6 +77,44 @@ namespace WebApp.Pages.PlayGame
             
             return RedirectToPage(new {id = gameBoard.Id});
         }
+        */
+
+        public IActionResult OnPostTest(int id, int x, int y, bool isFlagged)
+        {
+            Console.WriteLine("ugh");
+            var jsonResult = new JsonResult(new {id, x, y, isFlagged});
+            return jsonResult;
+        }
+        
+        public void OnPostMove(int id, int x, int y)
+        {
+            var gameBoard = GameBoardEngine.GetGameBoardFromDb(id);
+
+            if (!GameBoardEngine.GameBoardPanels.Any(e => e.IsRevealed))
+            {
+                GameBoardEngine.FirstMove(x, y, new Random(), gameBoard);
+            }
+            
+            GameBoardEngine.RevealPanel(x, y, gameBoard);
+            GameBoardEngine.UpdateGameBoard(gameBoard);
+        }
+
+        public void OnPostFlag(int id, int x, int y)
+        {
+            var gameBoard = GameBoardEngine.GetGameBoardFromDb(id);
+            
+            if (GameBoardEngine.GetPanel(x, y).IsFlagged)
+            {
+                GameBoardEngine.UnflagPanel(x, y);
+            }
+            else if (!GameBoardEngine.GetPanel(x, y).IsRevealed)
+            {
+                GameBoardEngine.FlagPanel(x, y);
+            }
+            
+            GameBoardEngine.UpdateGameBoard(gameBoard);
+        }
+        
         
         public string GetSingleState(Panel panel)
         {

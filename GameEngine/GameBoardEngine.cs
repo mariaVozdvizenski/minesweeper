@@ -10,6 +10,8 @@ namespace GameEngine
     public class GameBoardEngine
     {
         private readonly AppDbContext _context;
+
+        public int Id { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
         public ICollection<Panel>? GameBoardPanels { get; set; }
@@ -44,7 +46,8 @@ namespace GameEngine
                 Height = height,
                 MineCount = mineCount,
                 PanelsListJson = JsonSerializer.Serialize(newPanels),
-                Status = GameStatus.InProgress
+                Status = GameStatus.InProgress,
+                Width = width
             };
             
             GameStatus = GameStatus.InProgress;
@@ -62,6 +65,7 @@ namespace GameEngine
             Height = gameBoard.Height;
             Width = gameBoard.Width;
             GameStatus = gameBoard.Status;
+            Id = gameBoard.Id;
             
             DeserializeGameBoardPanels(gameBoard);
             

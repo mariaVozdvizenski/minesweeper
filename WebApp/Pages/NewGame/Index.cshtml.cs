@@ -43,7 +43,7 @@ namespace WebApp.Pages.NewGame
                 return Page();
             }
             gameBoardEngine.AddGameBoardToDb(gameBoard);
-            return RedirectToPage("/PlayGame/Index", new {id = GameBoard.Id});
+            return RedirectToPage("/PlayGame/Index", new {id = gameBoard.Id});
         }
     }
 }
