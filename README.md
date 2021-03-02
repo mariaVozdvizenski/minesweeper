@@ -1,12 +1,17 @@
 # Minesweeper
 
-#Generate database migration
+## Running the game from command prompt
+
+1. Navigate to the root folder 
+2. To play the game in the console run the following command
 
 ```bash
+dotnet run -p Program
+```
 
-dotnet ef database drop --project DAL --startup-project WebApp
-dotnet ef migrations --project DAL --startup-project WebApp add InitialDbCreation 
-dotnet ef migrations --project DAL --startup-project WebApp remove
-dotnet ef database update --project DAL --startup-project WebApp
+3. To play the game on the web run the following command
+
+```bash
+dotnet run -p WebApp
 ```
 
